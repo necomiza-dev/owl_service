@@ -1,0 +1,35 @@
+{
+  "classifier": {
+    "class_names": [
+      "Серая сова",
+      "Филин",
+      "Домовый сыч"
+    ],
+    "feature_names_ru": [
+      "Длина тела (см)",
+      "Размах крыльев (см)",
+      "Масса (г)",
+      "Длина крыла (см)"
+    ],
+    "feature_keys": [
+      "body_length_cm",
+      "wingspan_cm",
+      "mass_g",
+      "wing_length_cm"
+    ]
+  },
+  "regression": {
+    "target_name_ru": "Масса совы",
+    "unit": "г",
+    "feature_names_ru": [
+      "Длина тела (см)",
+      "Размах крыльев (см)",
+      "Длина крыла (см)"
+    ],
+    "feature_keys": [
+      "body_length_cm",
+      "wingspan_cm",
+      "wing_length_cm"
+    ]
+  }
+}

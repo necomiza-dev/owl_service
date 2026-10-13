@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Классификация сов</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #3A2B22 0%, #675A58 50%, #A79E9E 100%);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: #3A2B22;
+        }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            background: #DDDBDA;
+            padding: 32px;
+            border-radius: 4px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        }
+        h1 { margin-top: 0; font-size: 24px; color: #3A2B22; }
+        .nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #A79E9E;
+            padding-bottom: 12px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #675A58;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 2px;
+            transition: 0.2s;
+        }
+        .nav a.active { background: #A79E9E; color: #3A2B22; }
+        .nav a:hover { background: #A79E9E; color: #3A2B22; }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #3A2B22;
+            font-weight: 500;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 6px;
+            border: 1px solid #A79E9E;
+            border-radius: 2px;
+            font-size: 15px;
+            box-sizing: border-box;
+            background: #FFFFFF;
+            color: #3A2B22;
+        }
+        input[type="number"]:focus {
+            border-color: #675A58;
+            outline: none;
+        }
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 12px;
+            background: #675A58;
+            color: #DDDBDA;
+            border: none;
+            border-radius: 2px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover { background: #3A2B22; }
+
+        .result {
+            margin-top: 28px;
+            padding: 18px 20px;
+            background: #FFFFFF;
+            border-left: 5px solid #675A58;
+            border-radius: 4px;
+        }
+        .result h2 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            color: #3A2B22;
+        }
+        .result .big {
+            font-size: 22px;
+            font-weight: 700;
+            color: #3A2B22;
+        }
+        .result ul { margin: 10px 0 0; padding-left: 20px; color: #675A58; }
+        .result li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="nav">
+        <a href="/" class="active">Классификация</a>
+        <a href="/regression">Регрессия</a>
+    </div>
+
+    <h1>🦉 Определение вида совы</h1>
+    <p style="color:#675A58; font-size:14px;">
+        Введите измерения — сеть определит вид: <b>серая сова</b>, <b>филин</b> или <b>домовый сыч</b>.
+    </p>
+
+    <form method="post" action="/">
+        {% for key in meta.feature_keys %}
+            <label>{{ meta.feature_names_ru[loop.index0] }}</label>
+            <input type="number" step="0.1" name="{{ key }}" required
+                   value="{{ form_values.get(key, '') }}">
+        {% endfor %}
+        <button type="submit">Определить вид</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <h2>Результат</h2>
+        <div class="big">{{ result.class_name }}</div>
+        <p style="margin:6px 0 0; color:#675A58;">
+            Уверенность: {{ "%.1f"|format(result.probability * 100) }}%
+        </p>
+        <ul>
+            {% for name, p in result.all_probs.items() %}
+                <li>{{ name }}: {{ "%.1f"|format(p * 100) }}%</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
